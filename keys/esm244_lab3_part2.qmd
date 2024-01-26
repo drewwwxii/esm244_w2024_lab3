@@ -1,6 +1,6 @@
 ---
 title: "ESM 244 Lab 3: Spatial kriging"
-author: "Casey O'Hara, Nathan Grimes, Allison Horst"
+author: Andrew Palacios 
 format: 
   html:
     code-fold: show
@@ -58,8 +58,8 @@ Take time to check the CRSs for each layer, transform if necessary, and then mak
 
 ```{r}
 ### Check the projection of the two layers
-st_crs(ca_counties_sf) ### Pseudomercator, epsg:3857
-st_crs(ca_dgw_sf)      ### WGS 84, epsg:4326
+# st_crs(ca_counties_sf) ### Pseudomercator, epsg:3857
+# st_crs(ca_dgw_sf)      ### WGS 84, epsg:4326
 
 ### update the groundwater data to match the counties CRS,
 ### and rename important variable for clarity

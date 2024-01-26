@@ -1,9 +1,9 @@
 ---
 title: "ESM 244 Lab 3: Working with spatial data"
-author: "Casey O'Hara, Nathan Grimes, Allison Horst"
+author: Andrew Palacios 
 format: 
   html:
-    code-fold: show
+    code-fold: show 
     toc: true
     number-sections: true
     embed-resources: true
@@ -14,7 +14,7 @@ execute:
   warning: false
 ---
 
-```{r}
+```{r setup}
 library(tidyverse)
 library(here)
 library(broom)
@@ -84,15 +84,15 @@ ca_counties_sf %>% terra::crs() ### to show proj4 string
 Plot the California counties using `geom_sf()`. Notice that we can update aesthetics just like we would for a regular ggplot object. Here, we update the color based on land area (and change the color gradient).
 
 ```{r}
-plot(ca_counties_sf)
+plot(ca_counties_sf %>% select(land_km2))
 ### note: select a specific column to create a single map
 ```
 
 ```{r}
 ggplot(data = ca_counties_sf) +
   geom_sf(aes(fill = land_km2), color = "white", size = 0.1) +
-  theme_void() +
-  scale_fill_gradientn(colors = c("cyan","blue","purple"))
+  theme_void() + ##gets rid of lat/long, axes information 
+  scale_fill_gradientn(colors = c("cyan","blue","purple")) #order is the order of the gradient
 ```
 
 Notice what aesthetics we *didn't* have to specify here?
@@ -119,7 +119,7 @@ write_sf(sesbania_nocounty_sf, here("data","red_sesbania","ds80_for_lab.gpkg"))
 
 ## Read in the sesbania data
 
-The data exist in `data/red_sesbania`, and the shapefile is stored as `ds80_for_lab.gpkg`.  We also want to check the coordinate reference system, and plot the data for a quick visual understanding.
+The data exist in `data/red_sesbania`, and the shapefile is stored as `ds80_for_lab.gpkg`. We also want to check the coordinate reference system, and plot the data for a quick visual understanding.
 
 ```{r}
 sesbania_sf <- read_sf(here("data","red_sesbania","ds80_for_lab.gpkg")) %>%
@@ -132,6 +132,7 @@ sesbania_sf %>% terra::crs()
 
 ```{r}
 plot(sesbania_sf %>% select(id))
+
 ```
 
 ## The analysis:
@@ -216,11 +217,6 @@ So we see that we can still use our usual wrangling skills! Let's do a bit more 
 
 ### Pseudocode here!
 
-
-
-
-
-
 ```{r}
 # Subset of sesbania point locations only in Solano County
 
@@ -230,7 +226,7 @@ county_max <- sesb_counts_sf %>%
 
 ### we appended the county names to Sesbania records earlier:
 solano_sesb_sf <- sesb_counties_sf %>% 
-  filter(county == county_max) ### what if two counties had the same max value?
+  filter(county %in% county_max) ### what if two counties had the same max value?
 
 # Only keep Solano polygon from California County data
 solano_sf <- ca_counties_sf %>% 
